@@ -30,4 +30,4 @@ jobs:
     - name: Run tests
       run: sbt test
     - name: Run Build
-      run: sbt build
+      run: sbt compile
