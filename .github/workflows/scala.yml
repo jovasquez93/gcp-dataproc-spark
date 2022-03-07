@@ -23,7 +23,7 @@ jobs:
       uses: actions-hub/gcloud@360.0.0
       env:
         PROJECT_ID: nimbus-dashboard-340420
-        APPLICATION_CREDENTIALS: nimbus-dashboard-340420-4b2bf2da9668.json
+        APPLICATION_CREDENTIALS: base64 ~/nimbus-dashboard-340420-4b2bf2da9668.json
       with:
         args: info      
     - name: Run tests
