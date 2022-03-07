@@ -40,7 +40,7 @@ jobs:
         # Executables or scripts that will run on all nodes in your cluster immediately after the cluster is set up
         initialization_actions: none
         # Dataproc Master Boot disk size
-        master-boot-disk-size: 500GB# optional, default is 500GB
+        master-boot-disk-size: 500GB # optional, default is 500GB
         # Dataproc Master Boot disk type
         master-boot-disk-type: pd-standard # optional, default is pd-standard
         # Dataproc Master Machine type
