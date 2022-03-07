@@ -18,14 +18,15 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-    # Instalar CLI de Google Cloud Platform    
-    - name: Instalar cli GCP
-      uses: actions-hub/gcloud@360.0.0
-      env:
-        PROJECT_ID: nimbus-dashboard-340420
-        APPLICATION_CREDENTIALS: base64 ~/nimbus-dashboard-340420-4b2bf2da9668.json
+    # Instalar CLI de Google Cloud Platform
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
       with:
-        args: info      
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+        
+    - name: Instalar cli GCP
+      uses: google-github-actions/setup-gcloud@v0
+        
     - name: Run tests
       run: sbt test
     - name: Run Build
