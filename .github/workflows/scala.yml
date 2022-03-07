@@ -18,14 +18,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-    # Instalar Credenciales CLI de Google Cloud Platform
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v0'
-      with:
-        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-        
-    - name: Instalar cli GCP
-      uses: google-github-actions/setup-gcloud@v0
    
     # Iniciar Test, Compilación y Empaquetado
     - name: Run tests
@@ -34,6 +26,15 @@ jobs:
       run: sbt compile
     - name: Run Package
       run: sbt package
+
+    # Instalar Credenciales CLI de Google Cloud Platform        
+    - name: Instalar cli GCP
+      uses: google-github-actions/setup-gcloud@v0
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
     - uses: actions-hub/gcloud@master
       env:
