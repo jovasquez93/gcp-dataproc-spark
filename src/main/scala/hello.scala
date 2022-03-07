@@ -22,6 +22,7 @@ object hello {
   def main(args: Array[String]) {
 
     println("hola mundo, leyendo tabla...")
+    println("hola mundo, leyendo tabla2...")
     var dfTblInput = spark.read.options(Map("inferSchema" -> "true", "header" -> "true", "delimiter" -> ","))
       .csv(pathInput)
 
