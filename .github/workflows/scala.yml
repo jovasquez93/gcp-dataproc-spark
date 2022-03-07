@@ -31,12 +31,6 @@ jobs:
     - name: Instalar cli GCP
       uses: google-github-actions/setup-gcloud@v0
 
-    # - id: 'auth'
-    #   name: Iniciar autenticación
-    #   uses: 'google-github-actions/auth@v0'
-    #   with:
-    #     credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-
     - uses: actions-hub/gcloud@master
       name: Enviar archivo Jar a Datastorage
       env:
@@ -44,4 +38,21 @@ jobs:
         APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
       with:
         args: cp target/scala-2.12/proyecto_test_2.12-0.1.jar gs://dataproc-test-bdb/
+        cli: gsutil
+
+    - uses: actions-hub/gcloud@master
+      name: Enviar Datastorage a jobs dataproc
+      env:
+        PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+        APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      with:
+        args: dataproc job submit spark --cluster=cluster-dd7b --region=us-central1 --jars=gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar --class=hello.class
+
+    - uses: actions-hub/gcloud@master
+      name: Eliminar archivo Jar a Datastorage
+      env:
+        PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+        APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      with:
+        args: rm gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
         cli: gsutil
