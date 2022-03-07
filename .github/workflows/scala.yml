@@ -18,7 +18,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
-    # Instalar CLI de Google Cloud Platform
+    # Instalar Credenciales CLI de Google Cloud Platform
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
@@ -26,50 +26,19 @@ jobs:
         
     - name: Instalar cli GCP
       uses: google-github-actions/setup-gcloud@v0
-    - name: Gcloud Dataproc cluster creation!!
-      # You may pin to the exact commit or the version.
-      # uses: vishnudxb/gcloud-dataproc-creation@3c9ce50ec21826b22e955533a2eb7c7075c22e43
-      uses: vishnudxb/gcloud-dataproc-creation@v1.0.3
-      with:
-        # Enter your gcloud dataproc cluster name
-        cluster: Test
-        # Enter your gcloud dataproc cluster region
-        region: us-east-1 # optional, default is us-east1
-        # Enter your gcloud project id
-        project: nimbus-dashboard-340420
-        # Executables or scripts that will run on all nodes in your cluster immediately after the cluster is set up
-        initialization_actions: none
-        # Dataproc Master Boot disk size
-        master-boot-disk-size: 500GB # optional, default is 500GB
-        # Dataproc Master Boot disk type
-        master-boot-disk-type: pd-standard # optional, default is pd-standard
-        # Dataproc Master Machine type
-        master-machine-type: n1-standard-2 # optional, default is n1-standard-2
-        # The duration before cluster is auto-deleted after last job completes, such as "2h" or "1d".
-        max-idle: 1h # optional, default is 1h
-        # The number of master nodes in the cluster.
-        num-masters: 1 # optional, default is 1
-        # Dataproc Worker Boot disk size
-        worker-boot-disk-size: 500GB # optional, default is 500GB
-        # Dataproc Worker Boot disk type
-        worker-boot-disk-type: pd-standard # optional, default is pd-standard
-        # Dataproc Worker Machine type
-        worker-machine-type: n1-standard-2 # optional, default is n1-standard-2
-        # Dataproc Cluster Zone
-        zone: us-east1-b # optional, default is us-east1-b
-        # The image version to use for the cluster.
-        image-version: preview-ubuntu18 # optional, default is preview-ubuntu18
-        # Metadata to be made available to the guest operating system running on the instances
-        metadata: none
-        # Specifies scopes for the node instances.
-        scopes: https://www.googleapis.com/auth/cloud-platform # optional, default is https://www.googleapis.com/auth/cloud-platform
-        # The number of worker nodes in the cluster.
-        num-workers: 2 # optional, default is 2
-        # Specifies configuration properties for installed packages, such as Hadoop and Spark.
-        properties: Spark
-        # List of label KEY=VALUE pairs to add.
-        labels: env=test # optional, default is env=test
+   
+    # Iniciar Test, Compilación y Empaquetado
     - name: Run tests
       run: sbt test
     - name: Run Build
       run: sbt compile
+    - name: Run Package
+      run: sbt package
+
+    - uses: actions-hub/gcloud@master
+      env:
+        PROJECT_ID: ${{ secrets.GCP_PROJECT }}
+        APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      with:
+        args: cp home/runner/work/test/test/target/scala-2.12/proyecto_test_2.12-0.1.jar gs://dataproc-test-bdb/
+        cli: gsutil
