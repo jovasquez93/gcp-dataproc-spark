@@ -35,7 +35,7 @@ jobs:
       name: Enviar archivo Jar a Datastorage
       env:
         PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-        APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
       with:
         args: cp target/scala-2.12/proyecto_test_2.12-0.1.jar gs://dataproc-test-bdb/
         cli: gsutil
@@ -44,7 +44,7 @@ jobs:
       name: Enviar Datastorage a jobs dataproc
       env:
         PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-        APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
       with:
         args: dataproc jobs submit spark --cluster=cluster-dd7b --region=us-central1 --jar=gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
 
@@ -52,7 +52,7 @@ jobs:
       name: Eliminar archivo Jar a Datastorage
       env:
         PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-        APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        APPLICATION_CREDENTIALS: ${{ env.GCP_CREDENTIALS }}
       with:
         args: rm gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
         cli: gsutil
