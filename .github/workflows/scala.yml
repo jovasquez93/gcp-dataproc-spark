@@ -37,7 +37,7 @@ jobs:
         PROJECT_ID: ${{ secrets.GCP_PROJECT }}
         APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
       with:
-        args: cp target/scala-2.12/proyecto_test_2.12-0.1.jar gs://dataproc-test-bdb/
+        args: cp python/target/scala-2.12/proyecto_test_2.12-0.1.jar gs://dataproc-test-bdb/
         cli: gsutil
 
     - uses: actions-hub/gcloud@master
