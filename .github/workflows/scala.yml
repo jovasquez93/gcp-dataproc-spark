@@ -58,3 +58,8 @@ jobs:
         with:
           args: rm gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
           cli: gsutil
+
+      - uses: actions-hub/gcloud@master
+        name: Eliminar cluster
+        with:
+          args: dataproc clusters delete ${{ secrets.GCP_CLUSTER_NAME }} --region ${{ secrets.GCP_REGION }}
