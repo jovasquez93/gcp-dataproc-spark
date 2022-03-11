@@ -20,8 +20,8 @@ jobs:
           distribution: "temurin"
 
       # Iniciar Test, Compilación y Empaquetado
-      - name: Iniciar test
-        run: sbt test
+      # - name: Iniciar test
+      #   run: sbt test
       - name: Iniciar comilación
         run: sbt compile
       - name: Iniciar empaquetado
