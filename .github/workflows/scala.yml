@@ -60,7 +60,7 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         with:
-          args: dataproc jobs -submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://${{ secrets.GCP_DATASTORAGE_NAME }}/${{ secrets.FILE_NAME_COMPILED }}
+          args: dataproc jobs submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://${{ secrets.GCP_DATASTORAGE_NAME }}/${{ secrets.FILE_NAME_COMPILED }}
   Delete-Instance:
     if: always()
     needs: [Dataproc]
