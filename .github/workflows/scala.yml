@@ -1,7 +1,7 @@
 name: Deploy GCP Dataproc CI
 
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
