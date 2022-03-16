@@ -48,6 +48,7 @@ jobs:
 
       - uses: actions-hub/gcloud@master
         name: Crear cluster Dataproc
+        continue-on-error: true
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
@@ -56,6 +57,7 @@ jobs:
 
       - uses: actions-hub/gcloud@master
         name: Enviar Datastorage a jobs dataproc
+        continue-on-error: true
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
