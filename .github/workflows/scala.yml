@@ -1,9 +1,7 @@
 name: Deploy GCP Dataproc CI
-
 on:
   pull_request:
     branches: [main]
-
 jobs:
   Dataproc:
     name: Instalar, Construir, Publicar y Desplegar
@@ -62,7 +60,7 @@ jobs:
         with:
           args: dataproc jobs submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://${{ secrets.GCP_DATASTORAGE_NAME }}/${{ secrets.FILE_NAME_COMPILED }}
   
-  Delete-Instance:
+  Delete-Cluster:
     if: always()
     needs: [Dataproc]
     runs-on: ubuntu-latest
