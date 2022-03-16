@@ -60,7 +60,7 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         with:
-          args: dataproc jobs submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
+          args: dataproc jobs -submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
 
       - uses: actions-hub/gcloud@master
         name: Eliminar archivo Jar a Datastorage
