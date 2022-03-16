@@ -63,7 +63,7 @@ jobs:
           args: dataproc jobs -submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
 
   Delete-Instance:
-    if: ${{ job.status != 'success' }}
+    if: ${{ jobs.Dataproc.status != 'success' }}
     runs-on: ubuntu-latest
     name: Eliminar
     steps:
