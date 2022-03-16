@@ -1,7 +1,7 @@
 name: Deploy GCP Dataproc CI
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [main]
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         with:
-          args: cp target/scala-2.12/proyecto_test_2.12-0.1.jar gs://dataproc-test-bdb/
+          args: cp target/scala-2.12/${{ secrets.FILE_NAME_COMPILED }} gs://${{ secrets.GCP_DATASTORAGE_NAME }}/
           cli: gsutil
 
       - uses: actions-hub/gcloud@master
@@ -60,7 +60,7 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         with:
-          args: dataproc jobs -submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
+          args: dataproc jobs -submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://${{ secrets.GCP_DATASTORAGE_NAME }}/${{ secrets.FILE_NAME_COMPILED }}
   Delete-Instance:
     if: always()
     runs-on: ubuntu-latest
@@ -79,15 +79,17 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0
 
       - uses: actions-hub/gcloud@master
+        continue-on-error: true
         name: Eliminar archivo Jar en Datastorage
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         with:
-          args: rm gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
+          args: rm gs://${{ secrets.GCP_DATASTORAGE_NAME }}/${{ secrets.FILE_NAME_COMPILED }}
           cli: gsutil
 
       - uses: actions-hub/gcloud@master
+        continue-on-error: true
         name: Eliminar cluster
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
