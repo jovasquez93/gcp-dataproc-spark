@@ -1,7 +1,6 @@
 name: Deploy GCP Dataproc CI
-on:
-  pull_request:
-    branches: [main]
+on: [pull_request]
+
 jobs:
   Dataproc:
     name: Instalar, Construir, Publicar y Desplegar
