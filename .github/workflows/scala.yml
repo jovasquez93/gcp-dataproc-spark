@@ -64,6 +64,7 @@ jobs:
 
       - uses: actions-hub/gcloud@master
         name: Eliminar archivo Jar a Datastorage
+        continue-on-error: true
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
@@ -72,6 +73,7 @@ jobs:
           cli: gsutil
 
       - uses: actions-hub/gcloud@master
+        continue-on-error: true
         name: Eliminar cluster
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
