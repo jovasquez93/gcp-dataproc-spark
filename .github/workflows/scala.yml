@@ -22,7 +22,7 @@ jobs:
       # Iniciar Test, Compilación y Empaquetado
       # - name: Iniciar test
       #   run: sbt test
-      - name: Iniciar comilación
+      - name: Iniciar compilación
         run: sbt compile
       - name: Iniciar empaquetado
         run: sbt package
@@ -48,7 +48,6 @@ jobs:
 
       - uses: actions-hub/gcloud@master
         name: Crear cluster Dataproc
-        continue-on-error: true
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
@@ -57,16 +56,31 @@ jobs:
 
       - uses: actions-hub/gcloud@master
         name: Enviar Datastorage a jobs dataproc
-        continue-on-error: true
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         with:
           args: dataproc jobs -submit spark --cluster=${{ secrets.GCP_CLUSTER_NAME }} --region=${{ secrets.GCP_REGION }} --jar=gs://dataproc-test-bdb/proyecto_test_2.12-0.1.jar
 
+  Delete-Instance:
+    if: ${{ job.status != 'success' }}
+    runs-on: ubuntu-latest
+    name: Eliminar
+    steps:
+      - uses: actions/checkout@v2
+        name: Verificar repositorio
+
+      - id: "auth"
+        name: "Establecer credenciales gcloud"
+        uses: "google-github-actions/auth@v0"
+        with:
+          credentials_json: "${{ secrets.GCP_CREDENTIALS }}"
+
+      - name: Instalar GCP cli
+        uses: google-github-actions/setup-gcloud@v0
+
       - uses: actions-hub/gcloud@master
-        name: Eliminar archivo Jar a Datastorage
-        continue-on-error: true
+        name: Eliminar archivo Jar en Datastorage
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
           APPLICATION_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
@@ -75,7 +89,6 @@ jobs:
           cli: gsutil
 
       - uses: actions-hub/gcloud@master
-        continue-on-error: true
         name: Eliminar cluster
         env:
           PROJECT_ID: ${{ secrets.GCP_PROJECT }}
